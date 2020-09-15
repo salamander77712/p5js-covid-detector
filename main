@@ -1,0 +1,79 @@
+let scene = 0;
+let result = "";
+function setup() {
+  createCanvas(windowWidth, windowHeight);
+  //object instantces
+  b1 = new Button(windowWidth / 2,windowHeight - 100,130,30,"Continue",'rgb(0,255,0)','rgb(0,200,0)',function(){
+    scene = 1;
+    result = random(["Positive","Negative","Gay"]);
+  });
+  b2 = new Button(windowWidth / 2,windowHeight - 100,130,30,"Next Patient",'rgb(0,255,0)','rgb(0,200,0)',function(){
+    scene = 0;
+  });
+}
+// classes
+// button class
+class Button {
+  constructor(ixp, iyp, iw, ih, itext, icolor1, icolor2, ido) {
+    this.w=iw; // button width
+    this.h=ih; // button height
+    this.posX=ixp; // button x postion
+    this.posY=iyp; // button y position
+    this.text=itext; // button label
+    this.color1=icolor1; // button default color
+    this.color2=icolor2; // button color when under mouse
+    this.do=ido // button function
+  }
+  checkMouse() {
+    if (mouseX > this.posX && mouseX < this.posX + this.w && mouseY > this.posY && mouseY < this.posY + this.h){
+      return true;      
+    }
+    else{
+     return false; 
+    }
+  }
+  display(){
+   if(this.checkMouse()){
+    fill(this.color2);
+    }
+  if(!this.checkMouse()){
+    fill(this.color1)
+    }
+    rect(this.posX,this.posY,this.w,this.h)
+    fill(0,0,0);
+    textAlign(CENTER, BOTTOM);
+    text(this.text,this.posX + this.w / 2,this.posY + this.h - this.h / 4);
+  }
+  handleClick(){
+    if(this.checkMouse()){
+      this.do();
+    }
+  }
+}
+    
+function draw() {
+  if(scene == 0){
+  mousePressed=function(){
+    b1.handleClick();
+  }
+  background(255);
+  b1.display();
+  textSize(32);
+  textAlign(CENTER,CENTER);
+  text('Lick your screen, \nthen press the button to see your results',windowWidth / 1.9, windowHeight / 2);
+  }
+  textSize(12);
+  if(scene == 1){
+    background(255);
+    textSize(32);
+    text("You have tested",windowWidth / 2.1,200);
+    text("for Covid-19",windowWidth / 2.1,500);
+    textSize(100);
+    text(result,windowWidth / 2,400);
+    textSize(12);
+    b2.display();
+    mousePressed=function(){
+    b2.handleClick();
+  }
+  }
+}
